@@ -1,6 +1,7 @@
 package errors
 
 import (
+	"encoding/xml"
 	"fmt"
 	"net/http"
 	"strings"
@@ -47,6 +48,11 @@ func (e Error) IsEmpty() bool {
 func (e Error) InField(field string) bool {
 	_, exists := e.Fields[field]
 	return exists
+}
+
+// MarshalXML implements a custom marshaler because Errors has a map
+func (er Error) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return nil
 }
 
 // SetField sets the error message for the field. Mutiple calls will overwrite
