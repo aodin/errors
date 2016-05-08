@@ -21,40 +21,40 @@ type Error struct {
 var _ error = Error{}
 
 // AddMeta appends a meta error
-func (e *Error) AddMeta(msg string, args ...interface{}) {
-	e.Meta = append(e.Meta, fmt.Sprintf(msg, args...))
+func (er *Error) AddMeta(msg string, args ...interface{}) {
+	er.Meta = append(er.Meta, fmt.Sprintf(msg, args...))
 }
 
 // Add is an alias for AddMeta
-func (e *Error) Add(msg string, args ...interface{}) {
-	e.AddMeta(msg, args...)
+func (er *Error) Add(msg string, args ...interface{}) {
+	er.AddMeta(msg, args...)
 }
 
 // Error implements the error interface
-func (e Error) Error() string {
-	output := e.Meta
-	for field, err := range e.Fields {
+func (er Error) Error() string {
+	output := er.Meta
+	for field, err := range er.Fields {
 		output = append(output, fmt.Sprintf("%s (%s)", err, field))
 	}
-	if e.Code == 0 {
+	if er.Code == 0 {
 		return fmt.Sprintf("%s", strings.Join(output, "; "))
 	}
-	return fmt.Sprintf("%d: %s", e.Code, strings.Join(output, "; "))
+	return fmt.Sprintf("%d: %s", er.Code, strings.Join(output, "; "))
 }
 
 // Exists returns true if there are either meta or field errors
-func (e Error) Exists() bool {
-	return len(e.Meta) > 0 || len(e.Fields) > 0
+func (er Error) Exists() bool {
+	return len(er.Meta) > 0 || len(er.Fields) > 0
 }
 
 // IsEmpty return false if there are no meta or field errors
-func (e Error) IsEmpty() bool {
-	return !e.Exists()
+func (er Error) IsEmpty() bool {
+	return !er.Exists()
 }
 
 // InField returns true if the given field has an error
-func (e Error) InField(field string) bool {
-	_, exists := e.Fields[field]
+func (er Error) InField(field string) bool {
+	_, exists := er.Fields[field]
 	return exists
 }
 
@@ -65,13 +65,13 @@ func (er Error) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 // SetField sets the error message for the field. Mutiple calls will overwrite
 // previous messages for that field.
-func (e *Error) SetField(field, msg string, args ...interface{}) {
-	e.Fields[field] = fmt.Sprintf(msg, args...)
+func (er *Error) SetField(field, msg string, args ...interface{}) {
+	er.Fields[field] = fmt.Sprintf(msg, args...)
 }
 
 // Set is an alias for SetField
-func (e *Error) Set(field, msg string, args ...interface{}) {
-	e.SetField(field, msg, args...)
+func (er *Error) Set(field, msg string, args ...interface{}) {
+	er.SetField(field, msg, args...)
 }
 
 // BadRequest creates an error with a 400 status code
