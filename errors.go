@@ -1,5 +1,7 @@
 /*
 Package errors provides a robust errors type which implements the built-in error interface. It adds an exported Code field, A []string Meta field for high-level errors and a map[string]string Fields field for named field errors.
+
+It includes a custom XML output as a workaround for its use of map.
 */
 package errors
 
@@ -58,9 +60,38 @@ func (er Error) InField(field string) bool {
 	return exists
 }
 
+type field struct {
+	XMLName xml.Name
+	Value   string `xml:",chardata"`
+}
+
+type metas struct {
+	Meta []string
+}
+
+type fields struct {
+	Field []field
+}
+
 // MarshalXML implements a custom marshaler because Errors has a map
 func (er Error) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	return nil
+	var f fields
+	for key, value := range er.Fields {
+		f.Field = append(f.Field, field{
+			XMLName: xml.Name{Local: key},
+			Value:   value,
+		})
+	}
+	anon := struct {
+		Code   int
+		Metas  metas
+		Fields fields
+	}{
+		Code:   er.Code,
+		Metas:  metas{Meta: er.Meta},
+		Fields: f,
+	}
+	return e.EncodeElement(anon, start)
 }
 
 // SetField sets the error message for the field. Mutiple calls will overwrite
