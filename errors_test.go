@@ -35,14 +35,14 @@ func TestErrors(t *testing.T) {
 }
 
 func TestErrors_MarshalXML(t *testing.T) {
-	er := BadRequest()
-	er.AddMeta("Not Found")
-	er.AddMeta("Unknown format")
-	er.SetField("UUID", "Invalid UUID format")
-	er.SetField("ID", "Missing ID")
-	out, err := xml.Marshal(er)
-	if err != nil {
-		t.Fatalf("unexpected err during xml.Marshal: %s", err)
+	err := BadRequest()
+	err.AddMeta("Not Found")
+	err.AddMeta("Unknown format")
+	err.SetField("UUID", "Invalid UUID format")
+	err.SetField("ID", "Missing ID")
+	out, xmlErr := xml.Marshal(err)
+	if xmlErr != nil {
+		t.Fatalf("unexpected error during xml.Marshal: %s", xmlErr)
 	}
 
 	// Map iteration is non-deterministic

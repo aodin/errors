@@ -14,7 +14,7 @@ import (
 
 // Error is an error structure with meta and field-specific errors
 type Error struct {
-	Code   int               `json:"-"`
+	Code   int               `json:"code,omitempty"`
 	Meta   []string          `json:"meta"`
 	Fields map[string]string `json:"fields"`
 }
@@ -83,7 +83,7 @@ func (er Error) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		})
 	}
 	anon := struct {
-		Code   int
+		Code   int `xml:",omitempty"`
 		Metas  metas
 		Fields fields
 	}{
