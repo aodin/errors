@@ -1,3 +1,6 @@
+/*
+Package errors provides a robust errors type which implements the built-in error interface. It adds an exported Code field, A []string Meta field for high-level errors and a map[string]string Fields field for named field errors.
+*/
 package errors
 
 import (
@@ -20,6 +23,11 @@ var _ error = Error{}
 // AddMeta appends a meta error
 func (e *Error) AddMeta(msg string, args ...interface{}) {
 	e.Meta = append(e.Meta, fmt.Sprintf(msg, args...))
+}
+
+// Add is an alias for AddMeta
+func (e *Error) Add(msg string, args ...interface{}) {
+	e.AddMeta(msg, args...)
 }
 
 // Error implements the error interface
@@ -59,6 +67,11 @@ func (er Error) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 // previous messages for that field.
 func (e *Error) SetField(field, msg string, args ...interface{}) {
 	e.Fields[field] = fmt.Sprintf(msg, args...)
+}
+
+// Set is an alias for SetField
+func (e *Error) Set(field, msg string, args ...interface{}) {
+	e.SetField(field, msg, args...)
 }
 
 // BadRequest creates an error with a 400 status code

@@ -11,12 +11,12 @@ func TestErrors(t *testing.T) {
 		t.Error("empty Errors should not exist")
 	}
 
-	err.AddMeta("Hello %s", "World")
+	err.Add("Hello %s", "World")
 	if err.IsEmpty() {
 		t.Error("Errors with a meta should not be empty")
 	}
 
-	err.SetField("whatever", "failure")
+	err.Set("whatever", "failure")
 	if !err.InField("whatever") {
 		t.Error("InField() should return true when an error has been set")
 	}
