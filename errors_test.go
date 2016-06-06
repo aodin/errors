@@ -38,7 +38,7 @@ func TestErrors(t *testing.T) {
 		t.Fatal("Message() should not create a nil error")
 	}
 	if msg.Error() != "Hello 1" {
-		t.Error(
+		t.Errorf(
 			`unexpected error from Message(): want "Hello 1", have "%s"`,
 			msg.Error(),
 		)

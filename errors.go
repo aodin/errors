@@ -1,7 +1,13 @@
 /*
-Package errors provides a robust errors type which implements the built-in error interface. It adds an exported Code field, A []string Meta field for high-level errors and a map[string]string Fields field for named field errors.
+Package errors provides a robust errors type which implements the built-in error interface. It includes the following:
 
-It includes a custom XML output as a workaround for its use of map.
+* Code, an int field for integer error codes such as HTTP status
+
+* Meta, a []string field for high-level errors
+
+* Fields, a map[string]string field for named errors
+
+It supports both JSON and XML marshaling.
 */
 package errors
 

@@ -2,8 +2,17 @@ Errors
 ======
 
 [![GoDoc](http://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/aodin/errors)
+[![Build Status](https://travis-ci.org/aodin/errors.svg?branch=master)](https://travis-ci.org/aodin/errors?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/aodin/errors)](https://goreportcard.com/report/aodin/errors)
 
-A robust errors type for Go.
+A robust errors type which implements the built-in `error` interface. It includes the following:
+
+* Code, an `int` field for integer error codes such as HTTP status
+* Meta, a `[]string` field for high-level errors
+* Fields, a `map[string]string` field for named errors
+
+It supports both JSON and XML marshaling.
+
 
 ### Quickstart
 
