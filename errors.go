@@ -112,12 +112,9 @@ func BadRequest() *Error {
 	return errs
 }
 
-// New creates a new empty error
-func New() *Error {
-	return &Error{
-		Meta:   make([]string, 0), // Make JSON meta [] instead of null
-		Fields: make(map[string]string),
-	}
+// Message creates a new *Error with the given message
+func Message(msg string, args ...interface{}) *Error {
+	return Meta(0, msg, args...)
 }
 
 // Meta returns an error with a pre-set meta error
@@ -126,4 +123,12 @@ func Meta(code int, msg string, args ...interface{}) *Error {
 	errs.Code = code
 	errs.Meta = []string{fmt.Sprintf(msg, args...)}
 	return errs
+}
+
+// New creates a new empty error
+func New() *Error {
+	return &Error{
+		Meta:   make([]string, 0), // Make JSON meta [] instead of null
+		Fields: make(map[string]string),
+	}
 }

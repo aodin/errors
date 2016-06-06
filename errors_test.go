@@ -32,6 +32,17 @@ func TestErrors(t *testing.T) {
 	if !strings.HasPrefix(uncodedErr.Error(), "huh") {
 		t.Error("uncoded Errors should begin with an error")
 	}
+
+	msg := Message("Hello %d", 1)
+	if msg == nil {
+		t.Fatal("Message() should not create a nil error")
+	}
+	if msg.Error() != "Hello 1" {
+		t.Error(
+			`unexpected error from Message(): want "Hello 1", have "%s"`,
+			msg.Error(),
+		)
+	}
 }
 
 func TestErrors_MarshalXML(t *testing.T) {
